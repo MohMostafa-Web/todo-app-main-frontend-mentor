@@ -40,8 +40,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Todo App Main Frontend Mentor Solution](https://your-solution-url.com)
-- Live Site URL: [Todo App Main Live Site](https://your-live-site-url.com)
+- Solution URL: [Todo App Main Frontend Mentor Solution](https://github.com/MohMostafa-Web/todo-app-main-frontend-mentor)
+- Live Site URL: [Todo App Main Live Site](https://mohmostafa-web.github.io/todo-app-main-frontend-mentor/)
 
 ## My process
 
