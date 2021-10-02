@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <title>Frontend Mentor | Todo app</title>
+  <style>
+    .todo-app .attribution { font-size: 11px; text-align: center; padding: 20px;}
+    .todo-app.dark .attribution {color: hsl(234, 39%, 85%);}
+    .attribution a { color: hsl(228, 45%, 44%); }
+  </style>
+</head>
+<body>
+  <section class="todo-app light">
+    <div class="container">
+      <header>
+        <div class="logo">todo</div>
+        <img src="images/icon-sun.svg" data-theme="light" >
+        <img class="available" src="images/icon-moon.svg" data-theme="dark" >
+      </header>
+      <div class="input-field">
+        <span class="icon"></span>
+        <input type="text" name="todo" data-placeholder="Create a new todo..." placeholder="Create a new todo...">
+      </div>
+      <div class="todo-list">
+        <ul>
+          <li id="todo-01" class="todo completed">
+            <span class="icon"><img class="check" src="images/icon-check.svg"></span>
+            <p>Complete online JavaScript course</p>
+            <img class="delete" src="images/icon-cross.svg">
+          </li>
+          <li id="todo-02" class="todo active">
+            <span class="icon"><img class="check" src="images/icon-check.svg"></span>
+            <p>Jog around the park 3x</p>
+            <img class="delete" src="images/icon-cross.svg">
+          </li>
+          <li id="todo-03" class="todo active">
+            <span class="icon"><img class="check" src="images/icon-check.svg"></span>
+            <p>10 minutes meditation</p>
+            <img class="delete" src="images/icon-cross.svg">
+          </li>
+          <li id="todo-04" class="todo active">
+            <span class="icon"><img class="check" src="images/icon-check.svg"></span>
+            <p>Read for 1 hour</p>
+            <img class="delete" src="images/icon-cross.svg">
+          </li>
+          <li id="todo-05" class="todo active">
+            <span class="icon"><img class="check" src="images/icon-check.svg"></span>
+            <p>Pick up groceries</p>
+            <img class="delete" src="images/icon-cross.svg">
+          </li>
+          <li id="todo-06" class="todo active">
+            <span class="icon"><img class="check" src="images/icon-check.svg"></span>
+            <p>Complete Todo App on Frontend Mentor</p>
+            <img class="delete" src="images/icon-cross.svg">
+          </li>
+        </ul>
+        <div class="controls">
+          <div class="left-items"><span class="number">5</span> items left</div>
+          <ul class="filters">
+            <li class="selected" data-filter="todo">All</li>
+            <li data-filter="active">Active</li>
+            <li data-filter="completed">Completed</li>
+          </ul>
+          <div class="clear-completed">Clear Completed</div>
+        </div>
+      </div>
+      <div class="note">Drag and drop to reorder list</div>
+    </div>
+    <div class="attribution">
+      Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+      Coded by <a href="https://www.frontendmentor.io/profile/MohMostafa-Web" target="_blank">MohMostafa</a>.
+    </div>
+  </section>
+  <script src="js/main.js"></script>
+</body>
+</html>
