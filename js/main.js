@@ -4,7 +4,7 @@ const input = document.querySelector(".input-field input");
 const todoListUl = document.querySelector(".todo-list ul");
 const controls = document.querySelector(".controls");
 const filterBtns = document.querySelectorAll(".controls .filters li");
-const leftItemsNumber = document.querySelector(".left-items .number");
+const leftItemsNumberCount = document.querySelector(".left-items .number");
 const clearCompleted = document.querySelector(".controls .clear-completed");
 
 
@@ -91,6 +91,7 @@ clearCompleted.onclick = function () {
 // Create function to add a new todo
 function addTodo(param) {
   const li = document.createElement("li"); // Create Element
+  li.id = `todo-${document.querySelectorAll(".todo").length + 1}`;
   li.className = "todo active"; // Add Class Name to Element
   // set InnerHTML
   li.innerHTML = `
@@ -98,16 +99,29 @@ function addTodo(param) {
     <p>${param}</p>
     <img class="delete" src="images/icon-cross.svg">
   `;
+  
+  // Add Drag and Drop Events
+  li.setAttribute("draggable", true);
+  li.lastElementChild.setAttribute("draggable", false); // Make delete button not draggable
+  // Add Event "dragstart" to each todo
+  li.ondragstart = dragStart;
+  // Add Event "dragover" to each todo to allow drop
+  li.ondragover = dragOver;
+  // Add Event "drop" to each todo
+  li.ondrop = drop;
+  
   // Append Element li to TodoList ul
   todoListUl.appendChild(li);
   // update Number of Left Active Items
   updateLeftItemsNumber();
+  // update numbering Todos
+  numberingTodos();
 }
 
 
 // Create Function to update left Active Items Number
 function updateLeftItemsNumber() {
-  leftItemsNumber.innerHTML = document.querySelectorAll(".todo.active").length; // Get Number of li.todo has Class "active"
+  leftItemsNumberCount.innerHTML = document.querySelectorAll(".todo.active").length; // Get Number of li.todo has Class "active"
 }
 // update Number of Left Active Items
 updateLeftItemsNumber();
@@ -135,35 +149,41 @@ function updateFilter() {
 }
 
 
-// Drag and Drop Todos
+// Add Drag and Drop Events to Already Created Todos
 document.querySelectorAll(".todo-list .todo").forEach(todo => {
   todo.setAttribute("draggable", true);
   todo.lastElementChild.setAttribute("draggable", false); // Make delete button not draggable
   // Add Event "dragstart" to each todo
-  todo.ondragstart = function (e) {
-    e.dataTransfer.setData("number", e.target.dataset.number); // Save "data-number" of dragged item in "number"
-    e.dataTransfer.setData("text", e.target.id); // Save "id" of dragged Item in "text"
-    e.dataTransfer.effectAllowed = "move"; // Make drag effect "move"
-  };
+  todo.ondragstart = dragStart;
   // Add Event "dragover" to each todo to allow drop
-  todo.ondragover = function (e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move"; // Make drop effect "move"
-  };
+  todo.ondragover = dragOver;
   // Add Event "drop" to each todo
-  todo.ondrop = function (e) {
-    e.preventDefault();
-    const number = e.dataTransfer.getData("number");
-    const data = e.dataTransfer.getData("text");
-    if (number > e.currentTarget.dataset.number) { // Check if number of dragged item > number of dropped item
-      e.currentTarget.before(document.getElementById(data)); // Insert dragged item before dropped item
-    } else {
-      e.currentTarget.after(document.getElementById(data)); // Insert dragged item after dropped item
-    }
-    // update Numbering Todos
-    numberingTodos();
-  };
+  todo.ondrop = drop;
 });
+
+
+// Drag and Drop handler Functions
+function dragStart(e) {
+  e.dataTransfer.setData("number", e.target.dataset.number); // Save "data-number" of dragged item in "number"
+  e.dataTransfer.setData("text", e.target.id); // Save "id" of dragged Item in "text"
+  e.dataTransfer.effectAllowed = "move"; // Make drag effect "move"
+}
+function dragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = "move"; // Make drop effect "move"
+}
+function drop(e) {
+  e.preventDefault();
+  const number = e.dataTransfer.getData("number");
+  const data = e.dataTransfer.getData("text");
+  if (number > e.currentTarget.dataset.number) { // Check if number of dragged item > number of dropped item
+    e.currentTarget.before(document.getElementById(data)); // Insert dragged item before dropped item
+  } else {
+    e.currentTarget.after(document.getElementById(data)); // Insert dragged item after dropped item
+  }
+  // update Numbering Todos
+  numberingTodos();
+}
 
 // Create function to make numbering Todos
 function numberingTodos() {
