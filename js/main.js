@@ -95,9 +95,9 @@ function addTodo(param) {
   li.className = "todo active"; // Add Class Name to Element
   // set InnerHTML
   li.innerHTML = `
-    <span class="icon"><img class="check" src="images/icon-check.svg"></span>
+    <span class="icon"><img class="check" src="images/icon-check.svg" alt="icon-check"></span>
     <p>${param}</p>
-    <img class="delete" src="images/icon-cross.svg">
+    <img class="delete" src="images/icon-cross.svg" alt="icon-cross">
   `;
   
   // Add Drag and Drop Events
