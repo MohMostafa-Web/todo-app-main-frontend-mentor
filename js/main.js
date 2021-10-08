@@ -8,14 +8,55 @@ const leftItemsNumberCount = document.querySelector(".left-items .number");
 const clearCompleted = document.querySelector(".controls .clear-completed");
 
 
+// Get Saved Data for todos in Local Storage
+if (localStorage.length !== 0) {
+  // console.log("There's local storage"); // debug
+
+  // Calculate Number of Todos that were saved in Local Storage
+  // Get Keys of Todos and Save them in Array
+  let numberOfSavedTodos = 0;
+  let arrKeys = [];
+  for (let [key, val] of Object.entries(localStorage)) {
+    if (key.startsWith("todo-")) {
+      numberOfSavedTodos += 1;
+      arrKeys.push(key);
+    }
+  }
+
+  // console.log("Number of Saved Todos = " + numberOfSavedTodos); // debug
+  // console.log(arrKeys); // debug
+
+  if (numberOfSavedTodos > 0) {
+    // Get the saved Todos in order
+    for (let i = 1; i <= arrKeys.length; i++) {
+      let data = JSON.parse(localStorage.getItem(`todo-${i}`));
+
+      // add saved todos to App dashboard
+      addTodo(data.text, data.class);
+    }
+  }
+}
+
+// Get Saved data-theme in local storage
+if (localStorage.getItem("data-theme")) { // Check if there's saved data-theme in local storage
+  // console.log("There's saved data-theme"); // debug
+
+  if (todoApp.classList.item(1) !== localStorage.getItem("data-theme")) { // Check if the current theme is not the saved theme
+    let savedTheme = localStorage.getItem("data-theme");
+
+    // apply the saved Theme
+    applyTheme(savedTheme);
+  }
+}
+
+
 // Toggle Light/Dark Theme
 headerImg.forEach(img => {
   img.onclick = function () {
-    const lastTheme = todoApp.classList.item(1);
-    todoApp.classList.remove(lastTheme); // Remove the last theme
-    todoApp.classList.add(this.dataset.theme); // Add the new theme
-    this.classList.remove("available"); // Remove Class "available" from clicked img
-    document.querySelector(`[data-theme=${lastTheme}]`).classList.add("available"); // Add Class "available" to a new img
+    localStorage.setItem("data-theme", this.dataset.theme); // Save clicked data-theme in Local Storage
+
+    // apply the clicked Theme
+    applyTheme(this.dataset.theme);
   };
 });
 
@@ -28,7 +69,9 @@ input.onfocus = function () {
 input.onblur = function () {
   if (this.value.trim() !== "") { // Check if input value is not empty
     // Add a new Todo
-    addTodo(this.value); 
+    addTodo(this.value);
+    // update Local Storage
+    updateLocalStorage();
   }
   this.value = ""; // Empty input
   this.placeholder = this.dataset.placeholder; // Return placeholder back
@@ -46,13 +89,22 @@ todoListUl.addEventListener("click", function (e) {
     updateLeftItemsNumber();
     // Update Filter
     updateFilter();
+    // update Local Storage
+    updateLocalStorage();
   }
   if (e.target.className === "delete") {
     e.target.parentElement.remove();
+
+    localStorage.removeItem(`${e.target.parentElement.id}`);
+
     // update Number of Left Active Items
     updateLeftItemsNumber();
     // Update Filter
     updateFilter();
+    // update Numbering Todos
+    numberingTodos();
+    // update Local Storage
+    updateLocalStorage();
   }
 });
 
@@ -81,6 +133,12 @@ clearCompleted.onclick = function () {
   document.querySelectorAll(".todo-list .todo").forEach(todo => {
     if (todo.classList.contains("completed")) {
       todo.remove();
+      localStorage.removeItem(`${todo.id}`);
+
+      // update Numbering Todos
+      numberingTodos();
+      // update Local Storage
+      updateLocalStorage();
     }
   });
 };
@@ -88,18 +146,28 @@ clearCompleted.onclick = function () {
 
 /** Helper Functions */
 
+// Create Function to apply the new Theme
+function applyTheme(newTheme) {
+  let lastTheme = todoApp.classList.item(1);
+  todoApp.classList.remove(lastTheme); // Remove the last theme
+  todoApp.classList.add(newTheme); // Add the new theme
+  document.querySelector(`[data-theme="${newTheme}"]`).classList.remove("available"); // Remove Class "available" from the img of new theme
+  document.querySelector(`[data-theme="${lastTheme}"]`).classList.add("available"); // Add Class "available" to the img of last theme
+}
+
+
 // Create function to add a new todo
-function addTodo(param) {
+function addTodo(textParam, classParam) {
   const li = document.createElement("li"); // Create Element
   li.id = `todo-${document.querySelectorAll(".todo").length + 1}`;
-  li.className = "todo active"; // Add Class Name to Element
+  li.className = classParam || "todo active"; // Add Class Name to Element
   // set InnerHTML
   li.innerHTML = `
     <span class="icon"><img class="check" src="images/icon-check.svg" alt="icon-check"></span>
-    <p>${param}</p>
+    <p>${textParam}</p>
     <img class="delete" src="images/icon-cross.svg" alt="icon-cross">
   `;
-  
+
   // Add Drag and Drop Events
   li.setAttribute("draggable", true);
   li.lastElementChild.setAttribute("draggable", false); // Make delete button not draggable
@@ -109,7 +177,7 @@ function addTodo(param) {
   li.ondragover = dragOver;
   // Add Event "drop" to each todo
   li.ondrop = drop;
-  
+
   // Append Element li to TodoList ul
   todoListUl.appendChild(li);
   // update Number of Left Active Items
@@ -149,19 +217,6 @@ function updateFilter() {
 }
 
 
-// Add Drag and Drop Events to Already Created Todos
-document.querySelectorAll(".todo-list .todo").forEach(todo => {
-  todo.setAttribute("draggable", true);
-  todo.lastElementChild.setAttribute("draggable", false); // Make delete button not draggable
-  // Add Event "dragstart" to each todo
-  todo.ondragstart = dragStart;
-  // Add Event "dragover" to each todo to allow drop
-  todo.ondragover = dragOver;
-  // Add Event "drop" to each todo
-  todo.ondrop = drop;
-});
-
-
 // Drag and Drop handler Functions
 function dragStart(e) {
   e.dataTransfer.setData("number", e.target.dataset.number); // Save "data-number" of dragged item in "number"
@@ -183,12 +238,35 @@ function drop(e) {
   }
   // update Numbering Todos
   numberingTodos();
+  // update Local Storage
+  updateLocalStorage();
 }
 
-// Create function to make numbering Todos
+// Create function to make numbering Todos [both data-number and id]
 function numberingTodos() {
   document.querySelectorAll(".todo-list .todo").forEach((todo, i) => {
     todo.setAttribute("data-number", i + 1);
+    todo.id = `todo-${i + 1}`;
   });
 }
 numberingTodos();
+
+
+// Create Function to Update Local Storage
+function updateLocalStorage() {
+  // Remove Items of Saved Todos from local storage
+  for (let [key, val] of Object.entries(localStorage)) {
+    if (key.startsWith("todo-")) {
+      localStorage.removeItem(key);
+    }
+  }
+
+  // Add Items of Saved Todos in local storage
+  document.querySelectorAll(".todo-list .todo").forEach(todo => {
+    let data = {
+      "class": todo.className,
+      "text": todo.textContent.trim()
+    }
+    localStorage.setItem(todo.id, JSON.stringify(data));
+  });
+}
