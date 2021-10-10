@@ -92,7 +92,6 @@ a {
   height: 300px;
   background-size: cover;
   -webkit-background-size: cover;
-  -moz-background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
   top: 0;
