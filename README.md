@@ -107,6 +107,6 @@ In the future, I will use more css preprocessors like sass and more frameworks l
 
 ## Author
 
-- Linkedin - [Mohamed Mostafa](https://www.linkedin.com/in/mohamed-mostafa-4a08aa1a2/)
+- Linkedin - [Mohamed Mostafa](https://www.linkedin.com/in/moh-mostafa/)
 - Frontend Mentor - [@MohMostafa-Web](https://www.frontendmentor.io/profile/MohMostafa-Web)
 - Github - [@MohMostafa-Web](https://github.com/MohMostafa-Web)

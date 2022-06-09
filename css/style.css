@@ -1,22 +1,26 @@
 /* Start Variables */
 :root {
-/* Primary */
---primary-bright-blue: hsl(220, 98%, 61%);
---primary-background: linear-gradient(125deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
-/* Light Theme */
---lt-very-light-gray: hsl(0, 0%, 98%);
---lt-very-light-grayish-blue: hsl(236, 33%, 92%);
---lt-light-grayish-blue: hsl(233, 11%, 84%);
---lt-dark-grayish-blue: hsl(236, 9%, 61%);
---lt-very-dark-grayish-blue: hsl(235, 19%, 35%);
-/* Dark Theme */
---dt-very-dark-blue: hsl(235, 21%, 11%);
---dt-very-dark-desaturated-blue: hsl(235, 24%, 19%);
---dt-light-grayish-blue: hsl(234, 39%, 85%);
---dt-light-grayish-blue-hover: hsl(236, 33%, 92%);
---dt-dark-grayish-blue: hsl(234, 11%, 52%);
---dt-very-dark-grayish-blue: hsl(233, 14%, 35%);
---dt-very-dark-grayish-blue: hsl(237, 14%, 26%);
+  /* Primary */
+  --primary-bright-blue: hsl(220, 98%, 61%);
+  --primary-background: linear-gradient(
+    125deg,
+    hsl(192, 100%, 67%),
+    hsl(280, 87%, 65%)
+  );
+  /* Light Theme */
+  --lt-very-light-gray: hsl(0, 0%, 98%);
+  --lt-very-light-grayish-blue: hsl(236, 33%, 92%);
+  --lt-light-grayish-blue: hsl(233, 11%, 84%);
+  --lt-dark-grayish-blue: hsl(236, 9%, 61%);
+  --lt-very-dark-grayish-blue: hsl(235, 19%, 35%);
+  /* Dark Theme */
+  --dt-very-dark-blue: hsl(235, 21%, 11%);
+  --dt-very-dark-desaturated-blue: hsl(235, 24%, 19%);
+  --dt-light-grayish-blue: hsl(234, 39%, 85%);
+  --dt-light-grayish-blue-hover: hsl(236, 33%, 92%);
+  --dt-dark-grayish-blue: hsl(234, 11%, 52%);
+  --dt-very-dark-grayish-blue: hsl(233, 14%, 35%);
+  --dt-very-dark-grayish-blue: hsl(237, 14%, 26%);
 }
 /* End Variables */
 /* Start Global Rules */
@@ -30,7 +34,7 @@
   margin: 0;
 }
 body {
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   font-size: 18px;
 }
 ul {
@@ -49,7 +53,7 @@ a {
     max-width: 540px;
   }
 }
-/* small */ 
+/* small */
 @media (min-width: 768px) {
   .container {
     max-width: 720px;
@@ -68,9 +72,6 @@ a {
   }
 }
 /* End Global Rules */
-/* Start Components */
-
-/* End Components */
 .todo-app {
   min-height: 100vh;
   position: relative;
@@ -87,7 +88,7 @@ a {
   background-color: var(--dt-very-dark-blue);
 }
 .todo-app::before {
-  content: '';
+  content: "";
   width: 100%;
   height: 300px;
   background-size: cover;
@@ -167,7 +168,7 @@ a {
   position: relative;
 }
 .todo-app .input-field::before {
-  content: 'Currently typing ';
+  content: "Currently typing ";
   font-size: 18px;
   position: absolute;
   top: 50%;
@@ -197,7 +198,7 @@ a {
 .todo-app .input-field input {
   width: 100%;
   color: var(--lt-dark-grayish-blue);
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   font-size: 18px;
   padding: 22px 0 20px 60px;
   border: none;
@@ -329,7 +330,7 @@ a {
   border: 1px solid var(--dt-very-dark-grayish-blue);
 }
 .todo-app .icon::after {
-  content: '';
+  content: "";
   width: 21px;
   height: 21px;
   border-radius: 50%;
@@ -452,3 +453,16 @@ a {
   color: var(--dt-dark-grayish-blue);
 }
 /* End Note */
+/* Start Copyright */
+.todo-app .copyright {
+  font-size: 11px;
+  text-align: center;
+  padding: 20px;
+}
+.todo-app.dark .copyright {
+  color: hsl(234, 39%, 85%);
+}
+.copyright a {
+  color: hsl(228, 45%, 44%);
+}
+/* End Copyright */
